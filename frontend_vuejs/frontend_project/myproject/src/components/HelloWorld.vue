@@ -10,18 +10,15 @@
 
 
 <script>
-
-
-
 const axios = require("axios");
 const _ = require("lodash");
 export default {
   name: "HelloWorld",
-  
+
   data() {
     return {
       //data1: 'bbb',
-      msg: "Welcome to ＭＹ　鳳",
+      msg: "Welcome",
 
       columns1: [
         {
@@ -63,11 +60,8 @@ export default {
                   },
                   on: {
                     click: () => {
-
                       console.log(params.row);
                       this.changeTodo(params.row);
-                      
-
                     }
                   }
                 },
@@ -109,115 +103,63 @@ export default {
       value: {
         done: 0
       },
-      url: 'http://16854a58.ngrok.io'
-    }; 
+      url: "http://xxx.xxx.xxx"
+    };
   },
   methods: {
     async changeTodo(par) {
-
-      let changeDone = await axios.put(this.url+'/ToDoList',
-       {
-            //headers: {'X-Requested-With': 'XMLHttpRequest'}, // 若有送出header需求, PHP要設定相對的header參數 
-           //withCredentials: true,
-            //responseType: 'json',
-            
-           // id: obj.value.id,
-           id:par.id
-           
-            
-       });
-       //已完成的防呆未做
-      window.location.reload()
+      let changeDone = await axios.put(this.url + "/ToDoList", {
+        id: par.id
+      });
+      //已完成的防呆未做
+      window.location.reload();
     },
-   async deleteJob(par) {
-
- //axios.delete('http://localhost:8000/ToDoList/delete', {id: par.id})
- axios.delete(this.url+'/ToDoList', {
-  data: 
-  {
-    id: par.id
-
-  }
-
-})
-.then(res => {
-    console.log(res);
-    window.location.reload()  
-})
-.catch(err => {
-    console.log(err);
-});
+    async deleteJob(par) {
+      axios
+        .delete(this.url + "/ToDoList", {
+          data: {
+            id: par.id
+          }
+        })
+        .then(res => {
+          console.log(res);
+          window.location.reload();
+        })
+        .catch(err => {
+          console.log(err);
+        });
       console.log(par.id);
-      
-
-
     },
     addUser() {},
 
-    //        let id = par.id;
-    //        let job = par.job;
-    //        let userId = par.user_id;
-    //        let userName =par.user_name;
-    //        let obj = {
-    //          id: id,
-    //          job: job,
-    //          user_id: userId,
-    //          user_name: userName
-    //        };
-
-    // {
-    //     title: '车辆',
-    //     center: 'center',
-    //     key:'licensenumber',
-    //     width:120,
-    //     render: (h, params) => {
-    //         return h('Select', {
-    //             props:{
-    //                 value: this.assignData[params.index].licensenumber,
-    //             },
-    //             on: {
-    //                 'on-change':(value) => {
-    //                     this.assignData[params.index].licensenumber = value;
-    //                 }
-    //             },
-    //         },
-    //         this.licensenumberlist.map((obj)=>{
-    //             return h('Option', {
-    //                 props: {value: obj.licensenumber}
-    //             });
-    //         })
-    //         );
-    //     },
-    // },
+  
 
     async customContent() {
       //let arr_opt = ['Peter', 'Hank', 'Nick'];
       this.$Modal.confirm({
         onOk: async () => {
-          console.log('submit');
-          axios.post(this.url+'/ToDoList', {
-            //headers: {'X-Requested-With': 'XMLHttpRequest'}, // 若有送出header需求, PHP要設定相對的header參數 
-           //withCredentials: true,
-            //responseType: 'json',
-            
-            user_id: this.value.user_id,
-            user_name:this.value.user_name,
-            job:this.value.job,
-            done:'0',
-            
-          })
-          .then(result => {
-            alert("新增成功!");
-            window.location.reload()
-            console.log(result);
-          })
-          .catch(err => {
-            alert("好像哪裡怪怪的!");
-            console.log(err);
-          });
+          console.log("submit");
+          axios
+            .post(this.url + "/ToDoList", {
+
+
+              user_id: this.value.user_id,
+              user_name: this.value.user_name,
+              job: this.value.job,
+              done: "0"
+            })
+            .then(result => {
+              alert("新增成功!");
+              window.location.reload();
+              console.log(result);
+            })
+            .catch(err => {
+              alert("好像哪裡怪怪的!");
+              console.log(err);
+            });
         },
         onCancel: () => {
-          console.log('Cancel');
+          console.log("Cancel");
           this.value = {};
         },
         render: h => {
@@ -231,15 +173,15 @@ export default {
                   size: "small"
                 },
                 on: {
-                  'on-change':(val)=>{
+                  "on-change": val => {
                     console.log(val);
-                    let arrayUsers = _.keyBy(this.users, 'id');
+                    let arrayUsers = _.keyBy(this.users, "id");
                     this.value.user_name = arrayUsers[val].name;
-                    this.value.user_id = val; 
+                    this.value.user_id = val;
                   }
                 }
               },
-              _.map(this.users, function(obj){
+              _.map(this.users, function(obj) {
                 console.log(obj);
                 return h(
                   "Option",
@@ -263,21 +205,17 @@ export default {
                 }
               }
             })
-          ])
+          ]);
         }
-      }
-      );
+      });
     }
   },
-  
-  beforeCreate: async function() {
-    this.url = 'http://16854a58.ngrok.io';
-    //this.data1 = 'aaa';
-    // let test = await axios.get("http://localhost:8000/ToDoList/hello");
-    // let users = await axios.get("http://localhost:8000/ToDoList/Users"); 
-     let test = await axios.get(this.url+"/ToDoList/hello");
-     let users = await axios.get(this.url+"/ToDoList/Users");
 
+  beforeCreate: async function() {
+    this.url = "http://xxx.xxx.xxx";
+
+    let test = await axios.get(this.url + "/ToDoList/hello");
+    let users = await axios.get(this.url + "/ToDoList/Users");
 
     //this.data1 = test.data;
     _.map(test.data, val => {
